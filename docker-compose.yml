@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  book_app_backend:
+    build:
+      context: .//backend
+      dockerfile: Dockerfile
+    image: book-app-backend
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - book_app_network
+
+  book_app_frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: book_app_frontend
+    image: book-app-frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - book_app_network
+
+networks:
+  book_app_network:
+    external: true

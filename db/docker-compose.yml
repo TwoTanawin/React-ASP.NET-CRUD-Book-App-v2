@@ -1,0 +1,34 @@
+services:
+  book_app_db:
+    image: postgres:latest
+    container_name: book_app_db
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=book_db   # Automatically creates the book_db
+    ports:
+      - "5434:5432"
+    networks:
+      - book_app_network
+
+  book_app_pgadmin:
+    image: dpage/pgadmin4
+    container_name: book_app_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8082:80"
+    depends_on:
+      - book_app_db
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - book_app_network
+
+volumes:
+  pgadmin_data:
+
+networks:
+  book_app_network:
+    external: true
